@@ -1,0 +1,3 @@
+[serve.static]
+# Compile Solid JSX (and TSX) for HTML imports served by Bun.serve().
+plugins = ["bun-plugin-tailwind", "./solid-plugin.ts"]

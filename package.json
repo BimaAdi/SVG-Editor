@@ -1,0 +1,27 @@
+{
+  "name": "svg-editor",
+  "module": "src/index.ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "check": "bun check",
+    "fmt": "bun fmt",
+    "dev": "bun --hot src/index.ts",
+    "build": "bun build.ts",
+    "build:exe": "bun run build-exe.ts",
+    "start": "cd dist && NODE_ENV=production bun index.js"
+  },
+  "devDependencies": {
+    "@solidjs/compiler": "^2.0.2",
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^7"
+  },
+  "dependencies": {
+    "@solidjs/web": "^2.0.3",
+    "bun-plugin-tailwind": "^0.1.2",
+    "solid-js": "^2.0.3",
+    "tailwindcss": "^4.3.5"
+  }
+}
