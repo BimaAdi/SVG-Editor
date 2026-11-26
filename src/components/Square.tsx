@@ -1,7 +1,7 @@
 import { createSignal, onSettled } from "solid-js";
 
-// Square size as a fraction of the smaller viewBox dimension.
-const SIZE_RATIO = 0.25;
+// Default box size in viewBox units.
+const DEFAULT_SIZE = 100;
 
 const clamp = (value: number, max: number) =>
   Math.min(Math.max(0, max), Math.max(0, value));
@@ -16,6 +16,8 @@ const toSvgPoint = (svg: SVGSVGElement, event: PointerEvent) => {
 
 export const Square = (props: {
   fill: string;
+  width?: number;
+  height?: number;
   initialPosition?: { x: number; y: number };
 }) => {
   const [scene, setScene] = createSignal({ width: 0, height: 0 });
@@ -30,11 +32,12 @@ export const Square = (props: {
   // Geometry is expressed in viewBox units. The canvas has a fixed pixel size,
   // so user units map 1:1 to CSS pixels and resizing the window never changes
   // the square's position or size.
-  const size = () => Math.min(scene().width, scene().height) * SIZE_RATIO;
+  const boxWidth = () => props.width ?? DEFAULT_SIZE;
+  const boxHeight = () => props.height ?? DEFAULT_SIZE;
 
   const maxPos = () => ({
-    x: Math.max(0, scene().width - size()),
-    y: Math.max(0, scene().height - size()),
+    x: Math.max(0, scene().width - boxWidth()),
+    y: Math.max(0, scene().height - boxHeight()),
   });
 
   onSettled(() => {
@@ -46,9 +49,8 @@ export const Square = (props: {
 
     setScene({ width, height });
 
-    const side = Math.min(width, height) * SIZE_RATIO;
-    const maxX = Math.max(0, width - side);
-    const maxY = Math.max(0, height - side);
+    const maxX = Math.max(0, width - boxWidth());
+    const maxY = Math.max(0, height - boxHeight());
     const initial = props.initialPosition;
 
     setPos(
@@ -72,8 +74,8 @@ export const Square = (props: {
       id="square"
       x={pos().x}
       y={pos().y}
-      width={size()}
-      height={size()}
+      width={boxWidth()}
+      height={boxHeight()}
       fill={props.fill}
       style={{
         cursor: dragging() ? "grabbing" : "grab",
